@@ -37,7 +37,7 @@ class FlaskCreator(object):
         filename = args[-2]
         template_file = args[-1]
 
-        full_path = os.path.join('blueprints', *path, filename)
+        full_path = os.path.join(self.path(*path), filename)
 
         with open(template_file, 'r') as f:
             Template(f.read()).stream(**kws).dump(full_path)
@@ -46,7 +46,7 @@ class FlaskCreator(object):
         path = args[:-1]
         filename = args[-1]
 
-        full_path = os.path.join('blueprints', *path, filename)
+        full_path = os.path.join(self.path(*path), filename)
 
 
         with open(full_path, 'r') as f:
@@ -95,8 +95,8 @@ class FlaskCreator(object):
                          module_import="""from .%s import %s
 # {{ module_import }}""" % (module, module),
                          module_blueprint="""app.register_blueprint(%s)
-# {{ module_blueprint }}""" % (module)
-                        )
+# {{ module_blueprint }}""" % (module))
+
         self.write_file_template(self.appname,
                                  self.appname,
                                  module,
@@ -120,6 +120,7 @@ class FlaskCreator(object):
                                  self.appname,
                                  module,
                                  'templates',
+                                 module,
                                  'index.html',
                                  'template_module_index.html',
                                  appname=self.appname,
