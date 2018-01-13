@@ -4,6 +4,8 @@ import os
 import re
 from jinja2 import Template
 
+RUNDIR=os.path.abspath(os.path.dirname(__file__))
+
 class FlaskCreator(object):
 
     def __init__(self, appname):
@@ -45,7 +47,7 @@ class FlaskCreator(object):
     def write_file_template(self, *args, **kws):
         path = args[:-2]
         filename = args[-2]
-        template_file = args[-1]
+        template_file = os.path.join(RUNDIR, args[-1])
 
         full_path = os.path.join(self.makedirs(*path), filename)
 
