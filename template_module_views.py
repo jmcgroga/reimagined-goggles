@@ -1,4 +1,5 @@
 from . import {{ module }}
+from {{ appname }}.models import *
 
 from flask import render_template
 
