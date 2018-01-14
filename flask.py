@@ -93,6 +93,20 @@ class FlaskCreator(object):
                         'models.py',
                         """""")
 
+        self.write_file_template(self.app_root,
+                                 'passenger_wsgi.py',
+                                 'passenger_wsgi_template.py',
+                                 appname=self.appname)
+
+        self.write_file_template(self.app_root,
+                                 'nginx_passenger_snippet.conf',
+                                 'nginx_passenger_snippet_template.conf',
+                                 appname=self.appname,
+                                 approot = self.app_root)
+
+        self.makedirs(self.app_module_root,
+                      'public')
+
         self.makedirs(self.app_module_root,
                       'tests')
         
