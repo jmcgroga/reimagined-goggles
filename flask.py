@@ -71,7 +71,7 @@ class FlaskCreator(object):
         Template(template).stream(**kws).dump(full_path)
 
     def initialize(self):
-        self.write_file_template(self.app_root,
+        self.write_file_template(self.app_module_root,
                                  'config.py',
                                  'template_config.py',
                                  appname=self.appname)
@@ -87,7 +87,8 @@ class FlaskCreator(object):
         
         self.write_file_template(self.app_module_root,
                                  '__init__.py',
-                                 'template_init.py')
+                                 'template_init.py',
+                                 appname=self.appname)
 
         self.write_file(self.app_module_root,
                         'models.py',
@@ -115,11 +116,16 @@ class FlaskCreator(object):
             module_prefix = '/' + module
 
         self.update_file(self.app_module_root,
+                         'config.py',
+                         blueprint_prefix="""    BLUEPRINT_%s_URL_PREFIX="%s"
+# {{ blueprint_prefix }}""" % (module.upper(), module_prefix))
+
+        self.update_file(self.app_module_root,
                          '__init__.py',
                          module_import="""from .%s import %s
 # {{ module_import }}""" % (module, module),
-                         module_blueprint="""app.register_blueprint(%s)
-# {{ module_blueprint }}""" % (module))
+                         module_blueprint="""app.register_blueprint(%s, url_prefix=app.config['BLUEPRINT_%s_URL_PREFIX'])
+# {{ module_blueprint }}""" % (module, module.upper()))
 
         self.write_file_template(self.module_root(module),
                                  '__init__.py',
