@@ -99,7 +99,7 @@ class FlaskCreator(object):
                                  appname=self.appname)
 
         self.write_file_template(self.app_root,
-                                 'nginx_passenger_snippet.conf',
+                                 '%s-http.conf' % (self.appname),
                                  'nginx_passenger_snippet_template.conf',
                                  appname=self.appname,
                                  approot = self.app_root)
